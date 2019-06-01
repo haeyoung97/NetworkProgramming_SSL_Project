@@ -11,6 +11,8 @@ public class ButtonEventListener implements ActionListener {
 	private JPanel contentpane;
 	private String openPath;
 	
+	private SSLSocketClient sslSocketClient;
+	
 	public ButtonEventListener(JPanel contentPane, JTextField textField) {
 		this.contentpane = contentPane;
 		this.textField = textField;
@@ -28,6 +30,7 @@ public class ButtonEventListener implements ActionListener {
 	private void command(String btnName, String data) {
 		switch(btnName) {
 		case "Access":
+			sslSocketClient = new SSLSocketClient(data, 9999);
 			System.out.println("Á¢¼Ó");
 			System.out.println(data);
 			break;
