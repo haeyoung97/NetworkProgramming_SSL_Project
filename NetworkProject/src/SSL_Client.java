@@ -5,18 +5,26 @@ import java.net.Socket;
 import javax.net.ssl.SSLSocketFactory;
 
 public class SSL_Client {
-
-	public static void main(String[] args) {
+	private int serverPort;
+	private String serverName;
+	
+	private String path;
+	
+	public SSL_Client(int serverPort, String serverName, String path) {
+		this.serverPort = serverPort;
+		this.serverName = serverName;
+		this.path = path;
+	}
+	
+	public void SSLconnection_Client() {
 		// TODO Auto-generated method stub
-		int serverPort = 3333;
-		String serverName = "localhost";
 		
-		System.setProperty("javax.net.ssl.truestStore", "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\trustedcerts");
-		
+		//System.setProperty("javax.net.ssl.truestStore", "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\trustedcerts");
+		System.setProperty("javax.net.ssl.truestStore", this.path);
 		try {
 			SSLSocketFactory sslSocketfactory = (SSLSocketFactory)SSLSocketFactory.getDefault();
 			
-			Socket socket = (Socket) sslSocketfactory.createSocket(serverName, serverPort);
+			Socket socket = (Socket) sslSocketfactory.createSocket(this.serverName, this.serverPort);
 			
 			BufferedReader socketBufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
@@ -40,12 +48,6 @@ public class SSL_Client {
 				System.out.print("message reply from server : ");
 				System.out.println(socketBufferedReader.readLine());
 			}
-			
-			
-			
-			
-			
-			
 			
 //			DataOutputStream outputStream = new DataOutputStream(sslSocket.getOutputStream());
 //			
