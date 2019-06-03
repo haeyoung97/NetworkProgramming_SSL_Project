@@ -1,2 +1,8 @@
-/ServerThread.class
+/ButtonEventListener.class
+/ClientInterface.class
 /RMI/
+/SSLSocketClient.class
+/SSL_Client.class
+/SSL_Server.class
+/ServerThread.class
+/openFilePath.class
