@@ -13,8 +13,8 @@ public class openFilePath {
 	public openFilePath() {
 		fileChooser = new JFileChooser();
 		
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("ppk", "ssl open");
-		fileChooser.setFileFilter(filter);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("sslkeyfile", "ssl file");
+		//fileChooser.setFileFilter(filter);
 		
 		fileChooser.setDialogTitle("Open");
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
