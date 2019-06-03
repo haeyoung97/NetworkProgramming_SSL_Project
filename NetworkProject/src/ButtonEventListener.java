@@ -11,11 +11,26 @@ public class ButtonEventListener implements ActionListener {
 	private JPanel contentpane;
 	private String openPath;
 	
+	private JTextField sslFile;
+	private JTextField serverAdd;
+	private JTextField port;
+	private JTextField username;
+	private JTextField accessLog;
+	
 	private SSLSocketClient sslSocketClient;
 	
 	public ButtonEventListener(JPanel contentPane, JTextField textField) {
 		this.contentpane = contentPane;
 		this.textField = textField;
+	}
+	
+	public ButtonEventListener(JPanel contentPane, JTextField sslFile, JTextField serverAdd, JTextField port, JTextField username, JTextField accessLog) {
+		this.contentpane = contentPane;
+		this.sslFile = sslFile;
+		this.serverAdd = serverAdd;
+		this.port = port;
+		this.username = username;
+		this.accessLog = accessLog;
 	}
 
 	@Override
@@ -23,16 +38,27 @@ public class ButtonEventListener implements ActionListener {
 		// TODO Auto-generated method stub
 		AbstractButton btn = (AbstractButton)e.getSource();
 		String btnName = btn.getName();
-		String data = textField.getText();
-		this.command(btnName, data);
+		this.command(btnName);
 	}
 	
-	private void command(String btnName, String data) {
+	private void command(String btnName) {
 		switch(btnName) {
 		case "Access":
-			sslSocketClient = new SSLSocketClient(data, 9999);
+			String sslfilePath = sslFile.getText();
+			String strServername = serverAdd.getText();
+			int serverport = Integer.parseInt(port.getText());
+			String strUsername = username.getText();
 			System.out.println("Á¢¼Ó");
-			System.out.println(data);
+			
+			SSL_Client client = new SSL_Client(serverport, strServername, sslfilePath, strUsername);
+			client.SSLconnection_Client();
+			String strAccessLog = client.getAccessMessage();
+			accessLog.setText(strAccessLog);
+			
+			if(client.isConnect()) {
+				client.run();
+			}
+			
 			break;
 			
 		case "Upload":
