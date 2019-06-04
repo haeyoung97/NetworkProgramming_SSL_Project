@@ -43,7 +43,7 @@ public class SSL_Client {
 			
 			commandPromptBufferedReader = new BufferedReader(new InputStreamReader(System.in));
 			
-			accessMsg = "client socket access success!";
+			accessMsg = username + " : client socket access success!";
 			System.out.println("Please enter a username : ");
 			TF = true;
 			

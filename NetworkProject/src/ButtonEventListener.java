@@ -17,7 +17,7 @@ public class ButtonEventListener implements ActionListener {
 	private JTextField username;
 	private JTextField accessLog;
 	
-	private SSLSocketClient sslSocketClient;
+	//private SSLSocketClient sslSocketClient;
 	
 	public ButtonEventListener(JPanel contentPane, JTextField textField) {
 		this.contentpane = contentPane;
