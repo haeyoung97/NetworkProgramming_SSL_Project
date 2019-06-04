@@ -23,11 +23,20 @@ public class ClientInterface extends JFrame {
 	
 	private JTextField serverAddressField;
 	private JTextField sslUploadField;
+	private JTextField usernameField;
+	private JTextField isAccessField;
+	private JTextField serverPortField;
+	
+	private JButton serverAccessBtn;
+	private JButton sslUploadBtn;
+	
 	
 	private ButtonEventListener serverAccessListener;
 	private ButtonEventListener sslUploadListener;
 	
 	private JSplitPane jsp;
+	
+	private boolean isAccess = false;
 	
 	
 	public ClientInterface() {
@@ -36,11 +45,13 @@ public class ClientInterface extends JFrame {
 		contentPane = getContentPane();
 		createButton();
 		createSearchPane();
+		//SSL_function(isAccess);
 		
 		jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, startPane, searchPane);
 		jsp.setDividerLocation(LayoutWidth/7);
 		
 		contentPane.add(jsp);
+		//SSL_function();
 		
 		setVisible(true);
 		
@@ -57,7 +68,7 @@ public class ClientInterface extends JFrame {
 		sslUploadField.setSize(80, 20);
 		panel.add(sslUploadField);
 
-		JButton sslUploadBtn = new JButton();
+		sslUploadBtn = new JButton();
 		sslUploadBtn.setText("업로드");
 		sslUploadBtn.setName("Upload");
 		sslUploadBtn.setPreferredSize(new Dimension(70, 20));
@@ -74,16 +85,16 @@ public class ClientInterface extends JFrame {
 		JLabel serverPortLabel = new JLabel("server port : ");
 		panel.add(serverPortLabel);
 		
-		JTextField serverPortField = new JTextField(5);
+		serverPortField = new JTextField(5);
 		panel.add(serverPortField);
 		
 		JLabel usernameLabel = new JLabel("username : ");
 		panel.add(usernameLabel);
 		
-		JTextField usernameField = new JTextField(8);
+		usernameField = new JTextField(8);
 		panel.add(usernameField);
 		
-		JButton serverAccessBtn = new JButton();
+		serverAccessBtn = new JButton();
 		serverAccessBtn.setText("접속");
 		serverAccessBtn.setName("Access");
 		serverAccessBtn.setPreferredSize(new Dimension(70,20));
@@ -95,20 +106,62 @@ public class ClientInterface extends JFrame {
 		JPanel secPanel = new JPanel();
 		JLabel isAccessLabel = new JLabel("Access : ");
 		secPanel.add(isAccessLabel);
-		JTextField isAccessField = new JTextField(60);
+		isAccessField = new JTextField(60);
 		isAccessField.setEnabled(false);
 		secPanel.add(isAccessField);
 		
 		startPane.add(secPanel, BorderLayout.CENTER);
-		
-		serverAccessListener = new ButtonEventListener(searchPane, sslUploadField, serverAddressField, serverPortField, usernameField, isAccessField);
+
 		sslUploadListener = new ButtonEventListener(searchPane, sslUploadField);
-		
+		//serverAccessListener = new ButtonEventListener(searchPane, sslUploadField, serverAddressField, serverPortField, usernameField, isAccessField);
+		serverAccessListener = new ButtonEventListener(isAccess);
+
+		sslUploadBtn.addActionListener(sslUploadListener);
+		serverAccessBtn.addActionListener(serverAccessListener);
+		//serverAccessListener = new ButtonEventListener(searchPane, sslUploadField, serverAddressField, serverPortField, usernameField, isAccessField);
+		/*
+		sslUploadListener = new ButtonEventListener(searchPane, sslUploadField);
+		serverAccessListener = new ButtonEventListener();
 		serverAccessBtn.addActionListener(serverAccessListener);
 		sslUploadBtn.addActionListener(sslUploadListener);
 		
+		System.out.println("Access? : " + serverAccessListener.isPressAccess());
+		if(serverAccessListener.isPressAccess()) {
+			int serverport = Integer.parseInt(serverPortField.getText());
+			String strServername = serverAddressField.getText();
+			String sslfilePath = sslUploadField.getText();
+			String strUsername = usernameField.getText();
+			
+			SSL_Client client = new SSL_Client(serverport, strServername, sslfilePath, strUsername);
+			client.SSLconnection_Client();
+			String strAccessLog = client.getAccessMessage();
+			isAccessField.setText(strAccessLog);
+			System.out.println(strAccessLog);
+			System.out.println(client.isConnect());
+		}
+		*/
 		//contentPane.add(startPane);
 	}
+	/*
+	void SSL_function(boolean isAccess) {
+			
+		System.out.println(isAccess);
+		if(isAccess) {
+			int serverport = Integer.parseInt(serverPortField.getText());
+			String strServername = serverAddressField.getText();
+			String sslfilePath = sslUploadField.getText();
+			String strUsername = usernameField.getText();
+			
+			SSL_Client client = new SSL_Client(serverport, strServername, sslfilePath, strUsername);
+			client.SSLconnection_Client();
+			String strAccessLog = client.getAccessMessage();
+			isAccessField.setText(strAccessLog);
+			System.out.println(strAccessLog);
+			System.out.println(client.isConnect());
+		}
+	}
+	*/
+	
 	
 	void createSearchPane() {
 		JPanel panel = new JPanel();

@@ -28,7 +28,10 @@ public class SSL_Server {
 	}
 	
 	public void establishEnviron() {
-		System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
+		//System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
+		//System.setProperty("javax.net.ssl.keyStorePassword", "networkSSL");
+		
+		System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\Á¤»ó¾Æ\\Desktop\\networkProject\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
 		System.setProperty("javax.net.ssl.keyStorePassword", "networkSSL");
 		
 		try {
@@ -47,7 +50,6 @@ public class SSL_Server {
 			System.err.println("Error Happend : " + ex.toString());
 		}
 	}
-
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -59,7 +61,8 @@ public class SSL_Server {
 		int mPort = Integer.parseInt(args[0]);
 		String mServiceName = args[1];
 		String mServer = args[2];
-		new SSL_Server(mPort, mServiceName, mServer);		
+		new SSL_Server(mPort, mServiceName, mServer);	
+		
 	}
 
 }
