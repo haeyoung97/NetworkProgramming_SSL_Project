@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import javax.net.ssl.SSLSocketFactory;
+import javax.swing.JTextField;
 
 public class SSL_Client {
 	private int serverPort;
@@ -20,6 +21,8 @@ public class SSL_Client {
 	private PrintWriter printWriter;
 	private BufferedReader commandPromptBufferedReader;
 	
+	private JTextField textField = new JTextField();
+	
 	public SSL_Client(int serverPort, String serverName, String path, String username) {
 		this.serverPort = serverPort;
 		this.serverName = serverName;
@@ -31,7 +34,8 @@ public class SSL_Client {
 		// TODO Auto-generated method stub
 		
 		//System.setProperty("javax.net.ssl.truestStore", "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\trustedcerts");
-		System.setProperty("javax.net.ssl.truestStore", this.path);
+		System.setProperty("javax.net.ssl.trustStore", this.path);
+		System.setProperty("javax.net.ssl.trustStorePassword", "networkSSL");
 		try {
 			sslSocketfactory = (SSLSocketFactory)SSLSocketFactory.getDefault();
 			
@@ -43,11 +47,14 @@ public class SSL_Client {
 			
 			commandPromptBufferedReader = new BufferedReader(new InputStreamReader(System.in));
 			
-			accessMsg = username + " : client socket access success!";
-			System.out.println("Please enter a username : ");
+			accessMsg = "client socket access success!";
+			//System.out.println("Please enter a username : ");
+			textField.setText(accessMsg);
+			printWriter.println(commandPromptBufferedReader.readLine());
+			
 			TF = true;
 			
-			printWriter.println(commandPromptBufferedReader.readLine());
+			//printWriter.println(commandPromptBufferedReader.readLine());
 /*			
 			String message = null;
 			while(true) {
@@ -85,6 +92,7 @@ public class SSL_Client {
 		catch(Exception ex) {
 			System.err.println("Error Happened : " + ex.toString());
 			accessMsg = "Error Happened : " + ex.toString();
+			textField.setText(accessMsg);
 			TF = false;
 		}
 		

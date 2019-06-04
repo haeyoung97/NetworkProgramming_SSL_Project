@@ -25,8 +25,9 @@ public class ServerThread {
 	
 	public void start() {
 		try {
+			System.out.println("thread!");
 			HandleExcel handleExcel = new HandleExcelImpl();
-			Naming.rebind("rmi://" + server + ":" + port + "/" + serviceName, handleExcel);
+			//Naming.rebind("rmi://" + server + ":" + port + "/" + serviceName, handleExcel);
 			PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
