@@ -6,5 +6,13 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Users/haeyoung/Documents/GitHub/NetworkProgramming_SSL_Project/NetworkProject/POI_library/curvesapi-1.06.jar"/>
+	<classpathentry kind="lib" path="C:/Users/haeyoung/Documents/GitHub/NetworkProgramming_SSL_Project/NetworkProject/POI_library/poi-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/haeyoung/Documents/GitHub/NetworkProgramming_SSL_Project/NetworkProject/POI_library/poi-examples-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/haeyoung/Documents/GitHub/NetworkProgramming_SSL_Project/NetworkProject/POI_library/poi-excelant-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/haeyoung/Documents/GitHub/NetworkProgramming_SSL_Project/NetworkProject/POI_library/poi-ooxml-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/haeyoung/Documents/GitHub/NetworkProgramming_SSL_Project/NetworkProject/POI_library/poi-ooxml-schemas-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/haeyoung/Documents/GitHub/NetworkProgramming_SSL_Project/NetworkProject/POI_library/poi-scratchpad-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/haeyoung/Documents/GitHub/NetworkProgramming_SSL_Project/NetworkProject/POI_library/xmlbeans-3.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
