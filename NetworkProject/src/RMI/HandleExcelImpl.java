@@ -1,6 +1,8 @@
 package RMI;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -23,14 +25,26 @@ public class HandleExcelImpl extends UnicastRemoteObject implements HandleExcel 
 	
 	public void loadExcel() throws RemoteException{
 		String loadFile = "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\festival_data.xlsx";
-		FileInputStream fis = new FileInputStream(loadFile);
 		
-		XSSFWorkbook  workbook = new XSSFWorkbook (fis);
-		int rowindex = 0; int columnindex = 0;
 		
-		XSSFSheet sheet = workbook.getSheetAt(0);
-		// 행의 수
-		int rows = sheet.getPhysicalNumberOfRows();
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream(loadFile);
+	
+			XSSFWorkbook  workbook = new XSSFWorkbook (fis);
+			int rowindex = 0; int columnindex = 0;
+		
+			XSSFSheet sheet = workbook.getSheetAt(0);
+			// 행의 수
+			int rows = sheet.getPhysicalNumberOfRows();
+		}
+		catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch(IOException ie) {
+			ie.printStackTrace();
+		}
 		
 		
 	}

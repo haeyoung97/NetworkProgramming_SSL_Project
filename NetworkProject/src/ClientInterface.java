@@ -102,22 +102,13 @@ public class ClientInterface extends JFrame {
 		panel.add(serverAccessBtn);
 			
 		startPane.add(panel, BorderLayout.CENTER);
-		
-		JPanel secPanel = new JPanel();
-		JLabel isAccessLabel = new JLabel("Access : ");
-		secPanel.add(isAccessLabel);
-		isAccessField = new JTextField(60);
-		isAccessField.setEnabled(false);
-		secPanel.add(isAccessField);
-		
-		startPane.add(secPanel, BorderLayout.CENTER);
-
+	
 		sslUploadListener = new ButtonEventListener(searchPane, sslUploadField);
-		//serverAccessListener = new ButtonEventListener(searchPane, sslUploadField, serverAddressField, serverPortField, usernameField, isAccessField);
-		serverAccessListener = new ButtonEventListener(isAccess);
+		serverAccessListener = new ButtonEventListener(searchPane, sslUploadField, serverAddressField, serverPortField, usernameField);
+		//serverAccessListener = new ButtonEventListener(isAccess);
 
-		sslUploadBtn.addActionListener(sslUploadListener);
-		serverAccessBtn.addActionListener(serverAccessListener);
+		//sslUploadBtn.addActionListener(sslUploadListener);
+		//serverAccessBtn.addActionListener(serverAccessListener);
 		//serverAccessListener = new ButtonEventListener(searchPane, sslUploadField, serverAddressField, serverPortField, usernameField, isAccessField);
 		/*
 		sslUploadListener = new ButtonEventListener(searchPane, sslUploadField);

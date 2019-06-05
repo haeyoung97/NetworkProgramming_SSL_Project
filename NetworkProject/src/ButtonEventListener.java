@@ -15,8 +15,6 @@ public class ButtonEventListener implements ActionListener {
 	private JTextField serverAdd;
 	private JTextField port;
 	private JTextField username;
-	private JTextField accessLog = new JTextField();
-	
 	private boolean TF = false;
 	
 	//private SSLSocketClient sslSocketClient;
@@ -26,13 +24,12 @@ public class ButtonEventListener implements ActionListener {
 		this.textField = textField;
 	}
 	
-	public ButtonEventListener(JPanel contentPane, JTextField sslFile, JTextField serverAdd, JTextField port, JTextField username, JTextField accessLog) {
+	public ButtonEventListener(JPanel contentPane, JTextField sslFile, JTextField serverAdd, JTextField port, JTextField username) {
 		this.contentpane = contentPane;
 		this.sslFile = sslFile;
 		this.serverAdd = serverAdd;
 		this.port = port;
 		this.username = username;
-		this.accessLog = accessLog;
 	}
 	public ButtonEventListener(boolean TF) {
 		this.TF = TF;
@@ -63,7 +60,6 @@ public class ButtonEventListener implements ActionListener {
 			SSL_Client client = new SSL_Client(serverport, strServername, sslfilePath, strUsername);
 			client.SSLconnection_Client();
 			String strAccessLog = client.getAccessMessage();
-			accessLog.setText(strAccessLog);
 			System.out.println(strAccessLog);
 			System.out.println(client.isConnect());
 			if(client.isConnect()) {
