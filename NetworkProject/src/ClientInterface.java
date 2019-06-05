@@ -107,8 +107,8 @@ public class ClientInterface extends JFrame {
 		serverAccessListener = new ButtonEventListener(searchPane, sslUploadField, serverAddressField, serverPortField, usernameField);
 		//serverAccessListener = new ButtonEventListener(isAccess);
 
-		//sslUploadBtn.addActionListener(sslUploadListener);
-		//serverAccessBtn.addActionListener(serverAccessListener);
+		sslUploadBtn.addActionListener(sslUploadListener);
+		serverAccessBtn.addActionListener(serverAccessListener);
 		//serverAccessListener = new ButtonEventListener(searchPane, sslUploadField, serverAddressField, serverPortField, usernameField, isAccessField);
 		/*
 		sslUploadListener = new ButtonEventListener(searchPane, sslUploadField);
@@ -187,8 +187,6 @@ public class ClientInterface extends JFrame {
 
 	public static void main(String[] args) {
 		new ClientInterface();
-		
-
 	}
 
 }

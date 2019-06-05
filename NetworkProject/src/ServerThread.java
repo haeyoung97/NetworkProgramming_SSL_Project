@@ -3,18 +3,21 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
 import javax.net.ssl.SSLSocket;
-
-import RMI.HandleExcel;
-import RMI.HandleExcelImpl;
-
 
 public class ServerThread {
 	private SSLSocket socket;
 	private int port;
 	private String serviceName;
 	private String server;
+	
+	private PrintWriter printWriter;
+	private BufferedReader bufferedReader;
 	
 	public ServerThread(SSLSocket socket, int port, String serviceName, String server){
 		this.socket = socket;
@@ -24,19 +27,40 @@ public class ServerThread {
 	}
 	
 	public void start() {
+		
 		try {
 			System.out.println("thread!");
-			HandleExcel handleExcel = new HandleExcelImpl();
-			//Naming.rebind("rmi://" + server + ":" + port + "/" + serviceName, handleExcel);
-			PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			
+			printWriter = new PrintWriter(socket.getOutputStream());
+			bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
 			System.out.println("user : " + bufferedReader.readLine() + " is now connected to the server...");
+			
 			while(true) {
-				printWriter.println(bufferedReader.readLine() + " echo");
+				if("quit".equals(bufferedReader.readLine())) {
+					System.out.println("service close!");
+					printWriter.close();
+					bufferedReader.close();
+					break;
+				}
+				System.out.println("server test");
+				printWriter.write(bufferedReader.readLine() + " echo");
 			}
 			
 		}catch(IOException e) {
+			printWriter.close();
+			try {
+				bufferedReader.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				socket.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		
