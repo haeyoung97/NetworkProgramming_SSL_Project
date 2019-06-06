@@ -9,6 +9,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.swing.JOptionPane;
 
@@ -25,7 +26,7 @@ public class SSL_Client {
 	private String accessMsg;
 	
 	private SSLSocketFactory sslSocketfactory;
-	private Socket socket;
+	private SSLSocket socket;
 
 	private BufferedReader bufferedReader;
 	private PrintWriter printWriter;
@@ -51,7 +52,7 @@ public class SSL_Client {
 		try {
 			sslSocketfactory = (SSLSocketFactory)SSLSocketFactory.getDefault();
 
-			socket = (Socket) sslSocketfactory.createSocket(this.serverName, this.serverPort);
+			socket = (SSLSocket) sslSocketfactory.createSocket(this.serverName, this.serverPort);
 			
 			accessMsg = "[ user : " + username + " ] client socket access success!";
 			

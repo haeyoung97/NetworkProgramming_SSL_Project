@@ -1,4 +1,3 @@
-import java.rmi.AccessException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -7,6 +6,7 @@ import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 
+import RMI.HandleWordText;
 import RMI.HandleWordTextImpl;
 
 public class SSL_Server {
@@ -29,33 +29,15 @@ public class SSL_Server {
 	}
 	
 	public void rmiSetting_Server() {
-		HandleWordTextImpl handleWordText = null;
+		HandleWordText handleWordText = null;
+		Registry r = null;
 		try {
 			handleWordText = new HandleWordTextImpl();
+			r = LocateRegistry.getRegistry("localhost", 1099);
+			r.rebind("HandleWordText", handleWordText);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			System.out.print("RemoteException_handle : ");
-			e.printStackTrace();
-		}
-		
-		//make object findable
-		Registry r = null;
-		try {
-			r = LocateRegistry.getRegistry("localhost", 1099);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			System.out.print("RemoteException : ");
-			e.printStackTrace();
-		}
-		try {
-			r.rebind("HandleWordText", handleWordText);
-		} catch (AccessException e) {
-			// TODO Auto-generated catch block
-			System.out.print("AccessException : ");
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			System.out.print("RemoteException : ");
 			e.printStackTrace();
 		}
 		
