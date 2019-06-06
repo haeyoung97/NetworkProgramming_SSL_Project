@@ -1,20 +1,20 @@
-import java.io.FileOutputStream;
+//import java.io.FileOutputStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
+//import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class openFilePath {
 	
 	private JFileChooser fileChooser;
 	private String returnOpenPath;
-	private FileOutputStream fs;
+	//private FileOutputStream fs;
 	
 	public openFilePath() {
 		fileChooser = new JFileChooser();
 		
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("ppk", "ssl open");
-		fileChooser.setFileFilter(filter);
+		//FileNameExtensionFilter filter = new FileNameExtensionFilter("ppk", "ssl open");
+		//fileChooser.setFileFilter(filter);
 		
 		fileChooser.setDialogTitle("Open");
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);

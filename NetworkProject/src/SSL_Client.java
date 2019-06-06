@@ -1,16 +1,16 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Scanner;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.swing.JTextField;
+import javax.swing.JOptionPane;
 
 import RMI.HandleWordText;
 import RMI.HandleWordTextImpl;
@@ -22,15 +22,16 @@ public class SSL_Client {
 	private String username;
 	private boolean TF = false;
 	
-	private String accessMsg = null;
+	private String accessMsg;
 	
 	private SSLSocketFactory sslSocketfactory;
 	private Socket socket;
-	private BufferedReader socketBufferedReader;
+
+	private BufferedReader bufferedReader;
 	private PrintWriter printWriter;
-	private BufferedReader commandPromptBufferedReader;
+	private BufferedReader socketBufferedReader;
 	
-	private JTextField textField = new JTextField();
+	private HandleWordText handleWordText;
 	
 	public SSL_Client(int serverPort, String serverName, String path, String username) {
 		this.serverPort = serverPort;
@@ -43,79 +44,34 @@ public class SSL_Client {
 		// TODO Auto-generated method stub
 		rmiSetting_Client();
 		
-		//System.setProperty("javax.net.ssl.truestStore", "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\trustedcerts");
 		System.setProperty("javax.net.ssl.trustStore", this.path);
 		System.setProperty("javax.net.ssl.trustStorePassword", "networkSSL");
+		
+		System.setProperty("javax.net.debug","ssl");
 		try {
 			sslSocketfactory = (SSLSocketFactory)SSLSocketFactory.getDefault();
 
-			//HandleWordText he = (HandleWordText)Naming.lookup("rmi://"+serverName+"/HandleExcel");
 			socket = (Socket) sslSocketfactory.createSocket(this.serverName, this.serverPort);
 			
-			//System.out.println("test : " + he.dataParse());
-			socketBufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			accessMsg = "[ user : " + username + " ] client socket access success!";
 			
-			System.out.println("test 1");
-			printWriter = new PrintWriter(socket.getOutputStream(), true);
-			System.out.println("test 2");
-			//commandPromptBufferedReader = new BufferedReader(new InputStreamReader(System.in));
-			
-			accessMsg = "client socket access success!";
-			//System.out.println("Please enter a username : ");
-			//textField.setText(accessMsg);
-			//printWriter.println(commandPromptBufferedReader.readLine());
-			
-			HandleWordTextImpl handleExcelImpl = new HandleWordTextImpl();
-			System.out.println("test : " + handleExcelImpl.dataParse());
+			handleWordText = new HandleWordTextImpl();
+			System.out.println("test : " + handleWordText.dataParse());
 			TF = true;
 			
-			//printWriter.println(commandPromptBufferedReader.readLine());
-/*			
-			String message = null;
-			while(true) {
-				System.out.println("Prease enter a message to send to server : ");
-				message = commandPromptBufferedReader.readLine();
-				if(message.equals("quit")) {
-					socket.close();
-					break;
-				}
-				printWriter.println(message);
-				System.out.print("message reply from server : ");
-				System.out.println(socketBufferedReader.readLine());
-			}
-*/
-			
-//			DataOutputStream outputStream = new DataOutputStream(sslSocket.getOutputStream());
-//			
-//			DataInputStream inputStream = new DataInputStream(sslSocket.getInputStream());
-//			
-//			//System.out.println(inputStream.readUTF());
-//			
-//			while(true) {
-//				System.out.println("Write a Message : ");
-//				String messageToSend = System.console().readLine();
-//				outputStream.writeUTF(messageToSend);
-//				System.out.println(inputStream.readUTF());
-//				if(messageToSend.equals("close")) {
-//					outputStream.close();
-//					inputStream.close();
-//					sslSocket.close();
-//					break;
-//				}
-//			}
 		}
 		catch(Exception ex) {
 			System.err.println("Error Happened : " + ex.toString());
 			accessMsg = "Error Happened : " + ex.toString();
-			textField.setText(accessMsg);
 			TF = false;
+			JOptionPane.showMessageDialog(null, accessMsg);
 		}
 		
 	}
 	
 	public void rmiSetting_Client() {
 		try {
-			HandleWordText he = (HandleWordText)Naming.lookup("rmi://localhost/HandleExcel");
+			handleWordText = (HandleWordText)Naming.lookup("rmi://localhost/HandleWordText");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			System.out.print("MalformedURLException : ");
@@ -133,31 +89,33 @@ public class SSL_Client {
 	}
 	
 	
+	
+	
+	
 	public void run() {
-		String message = null;
+		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+		
 		try {
-			commandPromptBufferedReader = new BufferedReader(new InputStreamReader(System.in));
-			printWriter.println(commandPromptBufferedReader.readLine());
-			System.out.println("run_test");
-			while(true) {
-				System.out.println("Prease enter a message to send to server : ");
-				
-				message = commandPromptBufferedReader.readLine();
-				System.out.println("run_test1");
-				if(message.equals("quit")) {
-					socket.close();
-					break;
-				}
+			printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
+			socketBufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			
+			String message = null;
+			
+			System.out.print("First line : ");
+			
+			while(!(message = bufferedReader.readLine()).equals("close")){
 				printWriter.println(message);
-				System.out.print("message reply from server : ");
-				//System.out.println(socketBufferedReader.getInputStream());
-				//System.out.println(socketBufferedReader.readLine());
-				System.out.println(socketBufferedReader.readLine());
+				String line = socketBufferedReader.readLine();
+				System.out.println("Got Back : " + line);
+				System.out.print("Next Line : ");
 			}
-		}
-		catch (IOException e) {
+			
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 	public String getAccessMessage() {
 		return accessMsg;

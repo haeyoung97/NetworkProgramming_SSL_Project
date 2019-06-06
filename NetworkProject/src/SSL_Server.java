@@ -15,13 +15,9 @@ public class SSL_Server {
 	private SSLSocket sslSocket;
 	
 	private int port;
-	private String serviceName;
-	private String server;
 	
-	public SSL_Server(int port, String serviceName, String server) {
+	public SSL_Server(int port) {
 		this.port = port;
-		this.serviceName = serviceName;
-		this.server = server;
 		
 		try {
 			rmiSetting_Server();
@@ -33,9 +29,9 @@ public class SSL_Server {
 	}
 	
 	public void rmiSetting_Server() {
-		HandleWordTextImpl handleExcel = null;
+		HandleWordTextImpl handleWordText = null;
 		try {
-			handleExcel = new HandleWordTextImpl();
+			handleWordText = new HandleWordTextImpl();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			System.out.print("RemoteException_handle : ");
@@ -52,7 +48,7 @@ public class SSL_Server {
 			e.printStackTrace();
 		}
 		try {
-			r.rebind("HandleExcel", handleExcel);
+			r.rebind("HandleWordText", handleWordText);
 		} catch (AccessException e) {
 			// TODO Auto-generated catch block
 			System.out.print("AccessException : ");
@@ -66,20 +62,24 @@ public class SSL_Server {
 	}
 	
 	public void establishEnviron() {
+		
 		System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
 		//System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\정상아\\Desktop\\networkProject\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
 		System.setProperty("javax.net.ssl.keyStorePassword", "networkSSL");
+
+		System.setProperty("javax.net.debug","ssl");
 		
-		try {
+        try {
 			sslServerSocketfactory = (SSLServerSocketFactory)SSLServerSocketFactory.getDefault();
 			sslServerSocket = (SSLServerSocket)sslServerSocketfactory.createServerSocket(port);
 			
 			System.out.println("Echo Server Started & Ready to accept Client Connection");
-			
+			int tmp = 1;
 			while(true) {
 				sslSocket = (SSLSocket) sslServerSocket.accept();
-				//new ServerThread((SSLSocket)sslServerSocket.accept()).start();
-				new ServerThread(sslSocket, port, serviceName, server).start();	
+				System.out.println("accept! : " + tmp);
+				tmp++;
+				//new ServerThread(sslSocket).start();	
 			}
 		}catch(Exception ex) {
 			System.err.println("Error Happend : " + ex.toString());
@@ -90,14 +90,12 @@ public class SSL_Server {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		if (args.length != 3) {
-			System.out.println("Usage: Classname Port ServiceName Server");
+		if (args.length != 1) {
+			System.out.println("Usage: Classname Port"); // 실행방법 : java SSL_Server portNumver
 			System.exit(1);
 		}
 		int mPort = Integer.parseInt(args[0]);
-		String mServiceName = args[1];
-		String mServer = args[2];
-		new SSL_Server(mPort, mServiceName, mServer);	
+		new SSL_Server(mPort);	
 		
 	}
 
