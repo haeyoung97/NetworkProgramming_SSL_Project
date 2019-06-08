@@ -21,9 +21,10 @@ public class ButtonEventListener implements ActionListener {
 	private String openPath;
 	private String wordOpenPath;
 	private String wordtext;
+	private String infoText;
 	
 	private JTextArea wordRead;
-	//private JTextArea textArea;
+	private JTextArea infoArea;
 	
 	private JTextField sslFile;
 	private JTextField serverAdd;
@@ -34,7 +35,11 @@ public class ButtonEventListener implements ActionListener {
 	private HandleWordText handleWordText;
 //	private Highlighter.HighlightPainter myHighlighter = new MyHighLightPainter(Color.YELLOW);
 	
-	
+	public ButtonEventListener(JTextField textField, JTextArea wordRead, JTextArea infoArea) {
+		this.textField = textField;
+		this.wordRead = wordRead;
+		this.infoArea = infoArea;
+	}
 	public ButtonEventListener(JTextField textField, JTextArea wordRead) {
 		this.textField = textField;
 		this.wordRead = wordRead;
@@ -55,6 +60,12 @@ public class ButtonEventListener implements ActionListener {
 		// TODO Auto-generated method stub
 		AbstractButton btn = (AbstractButton)e.getSource();
 		String btnName = btn.getName();
+		try {
+			handleWordText = new HandleWordTextImpl();
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		this.command(btnName);
 	}
 	
@@ -104,9 +115,12 @@ public class ButtonEventListener implements ActionListener {
 				return;
 			}
 			try {
-				handleWordText = new HandleWordTextImpl();
+				//handleWordText = new HandleWordTextImpl();
 				wordtext = handleWordText.dataParse(wordOpenPath);
+				infoText = handleWordText.printFileInfo(wordOpenPath);
 				wordRead.setText(wordtext);
+				infoArea.setText(infoText);
+				
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -115,13 +129,15 @@ public class ButtonEventListener implements ActionListener {
 		case "search":
 			System.out.println("search");
 			String searchWord = textField.getText();
+			
 			if(searchWord.equals(null)) {
 				JOptionPane.showMessageDialog(null, "값을 입력하세요");
 				return;
 			}
 			else {
 				try {
-					handleWordText.highlight(wordRead, searchWord);
+					int count = handleWordText.highlight(wordRead, searchWord);
+					handleWordText.printSearchHistory(searchWord, infoArea, count);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

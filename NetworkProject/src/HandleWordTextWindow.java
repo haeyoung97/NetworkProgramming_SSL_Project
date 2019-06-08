@@ -69,19 +69,29 @@ class HandleWordTextWindow extends JFrame {
         
         JTextArea wordTextArea = new JTextArea();
         wordTextArea.setName("textWord");
-        wordTextArea.setText("hello");
+        wordTextArea.setText("file contents");
         //wordTextArea.setSize(new Dimension(400, 300));
 
         JScrollPane sp = new JScrollPane(wordTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         //sp.setBounds(20, 20, 400, 300);
-        sp.setPreferredSize(new Dimension(400, 250));
+        sp.setPreferredSize(new Dimension(430, 250));
         JTextField searchField = new JTextField(20);
         searchField.setName("searchField");
+        searchField.setText("search");
         
         JButton searchButton = new JButton();
         searchButton.setName("search");
         searchButton.setText("search");
-      
+        
+        JLabel fileInfo = new JLabel("File Info");
+        fileInfo.setName("fileInfo");
+        
+        JTextArea fileInfoTextArea = new JTextArea();
+        fileInfoTextArea.setName("fileInfoTextArea");
+        fileInfoTextArea.setText("file info");
+        
+        JScrollPane sp1 = new JScrollPane(fileInfoTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        sp1.setPreferredSize(new Dimension(430, 250));
         
         try {
 			handleWordText = new HandleWordTextImpl();
@@ -97,10 +107,13 @@ class HandleWordTextWindow extends JFrame {
 	        
 	        NewWindowContainer.add(sp);
 	        
-	        wordFileUploadListener = new ButtonEventListener(wordFileField, wordTextArea);
+	        NewWindowContainer.add(fileInfo);
+	        NewWindowContainer.add(sp1);
+	        
+	        wordFileUploadListener = new ButtonEventListener(wordFileField, wordTextArea, fileInfoTextArea);
 	        wordFileUpload.addActionListener(wordFileUploadListener);
 	        
-	       searchListener = new ButtonEventListener(searchField, wordTextArea);
+	       searchListener = new ButtonEventListener(searchField, wordTextArea, fileInfoTextArea);
 	       searchButton.addActionListener(searchListener);
 	        //System.out.println("»£¿’ : " + wordFilePath);
 	        //wordTextArea.setText(handleWordText.dataParse(wordFilePath));
@@ -110,7 +123,7 @@ class HandleWordTextWindow extends JFrame {
 			e.printStackTrace();
 		}
         
-        setSize(500,400);
+        setSize(500,700);
         setResizable(false);
         setVisible(true);
     }
