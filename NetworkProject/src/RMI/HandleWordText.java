@@ -4,7 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface HandleWordText extends Remote {
-	public String dataParse() throws RemoteException;
+	public String dataParse(String FilePath) throws RemoteException;
 	public void loadExcel() throws RemoteException;
 	
 }

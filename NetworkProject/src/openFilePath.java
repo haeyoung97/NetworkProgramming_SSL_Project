@@ -8,14 +8,18 @@ public class openFilePath {
 	
 	private JFileChooser fileChooser;
 	private String returnOpenPath;
+	private String bufferText;
 	//private FileOutputStream fs;
 	
 	public openFilePath() {
+		fileOpen();
+	}
+	public openFilePath(String bufferText) {
+		this.bufferText = bufferText;
+		fileOpen();
+	}
+	public void fileOpen() {
 		fileChooser = new JFileChooser();
-		
-		//FileNameExtensionFilter filter = new FileNameExtensionFilter("ppk", "ssl open");
-		//fileChooser.setFileFilter(filter);
-		
 		fileChooser.setDialogTitle("Open");
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		
