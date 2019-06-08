@@ -45,8 +45,8 @@ public class SSL_Server {
 	
 	public void establishEnviron() {
 		
-		System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
-		//System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\정상아\\Desktop\\networkProject\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
+		//System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
+		System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\정상아\\Desktop\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
 		System.setProperty("javax.net.ssl.keyStorePassword", "networkSSL");
 
 		System.setProperty("javax.net.debug","ssl");

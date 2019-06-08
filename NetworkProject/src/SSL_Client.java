@@ -57,7 +57,7 @@ public class SSL_Client {
 			accessMsg = "[ user : " + username + " ] client socket access success!";
 			
 			handleWordText = new HandleWordTextImpl();
-			System.out.println("test : " + handleWordText.dataParse());
+		//	System.out.println("test : " + handleWordText.dataParse());
 			TF = true;
 			
 		}

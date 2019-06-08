@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 public class Client_Interface extends JFrame {
 	
 	static final int LayoutWidth = 1000;
-	static final int LayoutHeight = 600;
+	static final int LayoutHeight = 300;
 	
 	private Container contentPane;
 	protected JPanel startPane = new JPanel();
@@ -47,10 +47,10 @@ public class Client_Interface extends JFrame {
 		//createSearchPane();
 		//SSL_function(isAccess);
 		
-		jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, startPane, searchPane);
-		jsp.setDividerLocation(LayoutWidth/7);
+		//jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, startPane, searchPane);
+		//jsp.setDividerLocation(LayoutWidth/7);
 		
-		contentPane.add(jsp);
+		contentPane.add(startPane);
 		//SSL_function();
 		
 		setVisible(true);

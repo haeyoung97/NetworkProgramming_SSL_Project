@@ -1,12 +1,29 @@
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
 import javax.swing.AbstractButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Document;
+import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
+
+import RMI.HandleWordText;
+import RMI.HandleWordTextImpl;
 
 public class ButtonEventListener implements ActionListener {
 	private JTextField textField;
 	private String openPath;
+	private String wordOpenPath;
+	private String wordtext;
+	
+	private JTextArea wordRead;
+	//private JTextArea textArea;
 	
 	private JTextField sslFile;
 	private JTextField serverAdd;
@@ -14,6 +31,14 @@ public class ButtonEventListener implements ActionListener {
 	private JTextField username;
 	private boolean TF = false;
 	
+	private HandleWordText handleWordText;
+	private Highlighter.HighlightPainter myHighlighter = new MyHighLightPainter(Color.YELLOW);
+	;
+	
+	public ButtonEventListener(JTextField textField, JTextArea wordRead) {
+		this.textField = textField;
+		this.wordRead = wordRead;
+	}
 	public ButtonEventListener(JTextField textField) {
 		this.textField = textField;
 	}
@@ -23,9 +48,6 @@ public class ButtonEventListener implements ActionListener {
 		this.serverAdd = serverAdd;
 		this.port = port;
 		this.username = username;
-	}
-	public ButtonEventListener(boolean TF) {
-		this.TF = TF;
 	}
 
 	@Override
@@ -66,14 +88,80 @@ public class ButtonEventListener implements ActionListener {
 			System.out.println("업로드");
 			openFilePath ofp = new openFilePath();
 			openPath = ofp.PathReturn();
-			textField.setText(openPath);
+			if(openPath != null) {
+				textField.setText(openPath);
+			}
 			System.out.println(openPath);
+			break;
+		case "wordUpload":
+			System.out.println("word Upload");
+			openFilePath wordOpen = new openFilePath();
+			wordOpenPath = wordOpen.PathReturn();
+			if(wordOpenPath != null) {
+				textField.setText(wordOpenPath);
+			}
+			else {
+				return;
+			}
+			try {
+				handleWordText = new HandleWordTextImpl();
+				wordtext = handleWordText.dataParse(wordOpenPath);
+				wordRead.setText(wordtext);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		case "search":
+			System.out.println("search");
+			String searchWord = textField.getText();
+			if(searchWord.equals(null)) {
+				JOptionPane.showMessageDialog(null, "값을 입력하세요");
+				return;
+			}
+			else {
+				highlight(wordRead, searchWord);
+			}
 			break;
 		}
 		
 	}
-	public String getOpenPath() {
-		return openPath;
+	public void highlight(JTextComponent textComp, String pattern) {
+		removeHighlights(textComp);
+		try {
+			Highlighter hilite = textComp.getHighlighter();
+			Document doc = textComp.getDocument();
+			String text = doc.getText(0, doc.getLength());
+		
+			int pos = 0;
+			while((pos = text.indexOf(pattern, pos)) >= 0) {
+				hilite.addHighlight(pos, pos+pattern.length(), myHighlighter);
+				pos += pattern.length();
+			}
+			
+			
+		}
+		catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void removeHighlights(JTextComponent textComp){
+		Highlighter hilite = textComp.getHighlighter();
+		Highlighter.Highlight[] hilites = hilite.getHighlights();
+		for(int i = 0; i < hilites.length; i++) {
+			if(hilites[i].getPainter() instanceof MyHighLightPainter) {
+				hilite.removeHighlight(hilites[i]);
+			}
+		}
+	}
+	private class MyHighLightPainter extends DefaultHighlighter.DefaultHighlightPainter{
+
+		public MyHighLightPainter(Color color) {
+			super(color);
+			// TODO Auto-generated constructor stub
+		}
+		
 	}
 	public boolean isPressAccess() {
 		return TF;
