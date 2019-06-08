@@ -32,8 +32,8 @@ public class ButtonEventListener implements ActionListener {
 	private boolean TF = false;
 	
 	private HandleWordText handleWordText;
-	private Highlighter.HighlightPainter myHighlighter = new MyHighLightPainter(Color.YELLOW);
-	;
+//	private Highlighter.HighlightPainter myHighlighter = new MyHighLightPainter(Color.YELLOW);
+	
 	
 	public ButtonEventListener(JTextField textField, JTextArea wordRead) {
 		this.textField = textField;
@@ -120,49 +120,54 @@ public class ButtonEventListener implements ActionListener {
 				return;
 			}
 			else {
-				highlight(wordRead, searchWord);
+				try {
+					handleWordText.highlight(wordRead, searchWord);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			break;
 		}
 		
 	}
-	public void highlight(JTextComponent textComp, String pattern) {
-		removeHighlights(textComp);
-		try {
-			Highlighter hilite = textComp.getHighlighter();
-			Document doc = textComp.getDocument();
-			String text = doc.getText(0, doc.getLength());
-		
-			int pos = 0;
-			while((pos = text.indexOf(pattern, pos)) >= 0) {
-				hilite.addHighlight(pos, pos+pattern.length(), myHighlighter);
-				pos += pattern.length();
-			}
-			
-			
-		}
-		catch (BadLocationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	public void removeHighlights(JTextComponent textComp){
-		Highlighter hilite = textComp.getHighlighter();
-		Highlighter.Highlight[] hilites = hilite.getHighlights();
-		for(int i = 0; i < hilites.length; i++) {
-			if(hilites[i].getPainter() instanceof MyHighLightPainter) {
-				hilite.removeHighlight(hilites[i]);
-			}
-		}
-	}
-	private class MyHighLightPainter extends DefaultHighlighter.DefaultHighlightPainter{
-
-		public MyHighLightPainter(Color color) {
-			super(color);
-			// TODO Auto-generated constructor stub
-		}
-		
-	}
+//	public void highlight(JTextComponent textComp, String pattern) {
+//		removeHighlights(textComp);
+//		try {
+//			Highlighter hilite = textComp.getHighlighter();
+//			Document doc = textComp.getDocument();
+//			String text = doc.getText(0, doc.getLength());
+//		
+//			int pos = 0;
+//			while((pos = text.indexOf(pattern, pos)) >= 0) {
+//				hilite.addHighlight(pos, pos+pattern.length(), myHighlighter);
+//				pos += pattern.length();
+//			}
+//			
+//			
+//		}
+//		catch (BadLocationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+//	public void removeHighlights(JTextComponent textComp){
+//		Highlighter hilite = textComp.getHighlighter();
+//		Highlighter.Highlight[] hilites = hilite.getHighlights();
+//		for(int i = 0; i < hilites.length; i++) {
+//			if(hilites[i].getPainter() instanceof MyHighLightPainter) {
+//				hilite.removeHighlight(hilites[i]);
+//			}
+//		}
+//	}
+//	private class MyHighLightPainter extends DefaultHighlighter.DefaultHighlightPainter{
+//
+//		public MyHighLightPainter(Color color) {
+//			super(color);
+//			// TODO Auto-generated constructor stub
+//		}
+//		
+//	}
 	public boolean isPressAccess() {
 		return TF;
 	}

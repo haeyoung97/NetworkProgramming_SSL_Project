@@ -1,5 +1,6 @@
 package RMI;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,9 +8,18 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Document;
+import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
+//
+//import ButtonEventListener.MyHighLightPainter;
+
 public class HandleWordTextImpl extends UnicastRemoteObject implements HandleWordText {
 	private static final long serialVersionUID = 1L;
 	
+	private Highlighter.HighlightPainter myHighlighter = new MyHighLightPainter(Color.YELLOW);
 	
 	public HandleWordTextImpl() throws RemoteException {
 		super();
@@ -43,7 +53,35 @@ public class HandleWordTextImpl extends UnicastRemoteObject implements HandleWor
 		return "hello";	
 	}
 	
-	public void loadExcel() throws RemoteException{
+	public void highlight(JTextComponent textComp, String pattern) throws RemoteException{
+		removeHighlights(textComp);
+		try {
+			Highlighter hilite = textComp.getHighlighter();
+			Document doc = textComp.getDocument();
+			String text = doc.getText(0, doc.getLength());
 		
+			int pos = 0;
+			while((pos = text.indexOf(pattern, pos)) >= 0) {
+				hilite.addHighlight(pos, pos+pattern.length(), myHighlighter);
+				pos += pattern.length();
+			}
+			
+			
+		}
+		catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	public void removeHighlights(JTextComponent textComp) throws RemoteException {
+		Highlighter hilite = textComp.getHighlighter();
+		Highlighter.Highlight[] hilites = hilite.getHighlights();
+		for(int i = 0; i < hilites.length; i++) {
+			if(hilites[i].getPainter() instanceof MyHighLightPainter) {
+				hilite.removeHighlight(hilites[i]);
+			}
+		}
+	}
+	
+	
 }
