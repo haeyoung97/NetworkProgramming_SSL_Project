@@ -120,7 +120,7 @@ public class ButtonEventListener implements ActionListener {
 				infoText = handleWordText.printFileInfo(wordOpenPath);
 				wordRead.setText(wordtext);
 				infoArea.setText(infoText);
-				
+				infoArea.append("-----------------[Search History]-----------------");
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
