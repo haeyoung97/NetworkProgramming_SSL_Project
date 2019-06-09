@@ -9,6 +9,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.swing.JOptionPane;
@@ -45,15 +46,23 @@ public class SSL_Client {
 		// TODO Auto-generated method stub
 		rmiSetting_Client();
 		
-		System.setProperty("javax.net.ssl.trustStore", this.path);
+		//System.setProperty("javax.net.ssl.trustStore", this.path);
+		System.setProperty("javax.net.ssl.trustStore", "trustedcerts");
 		System.setProperty("javax.net.ssl.trustStorePassword", "networkSSL");
 		
-		System.setProperty("javax.net.debug","ssl");
+		//System.setProperty("javax.net.debug","ssl");
+		//System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
 		try {
 			sslSocketfactory = (SSLSocketFactory)SSLSocketFactory.getDefault();
 
 			socket = (SSLSocket) sslSocketfactory.createSocket(this.serverName, this.serverPort);
-			
+			System.out.println("test_client3");
+			String[] supported = socket.getSupportedCipherSuites();
+			System.out.println("test_client4");
+			socket.setEnabledCipherSuites(supported);
+			printSocketInfo(socket);
+	        socket.startHandshake();
+	         System.out.println("test_client5");
 			accessMsg = "[ user : " + username + " ] client socket access success!";
 			
 			handleWordText = new HandleWordTextImpl();
@@ -123,6 +132,23 @@ public class SSL_Client {
 	}
 	public boolean isConnect() {
 		return TF;
+	}
+	
+	private static void printSocketInfo(SSLSocket s) {
+		System.out.println("Socket class: "+s.getClass());
+		System.out.println("   Remote address = "
+				+s.getInetAddress().toString());
+		System.out.println("   Remote port = "+s.getPort());
+		System.out.println("   Local socket address = "
+				+s.getLocalSocketAddress().toString());
+		System.out.println("   Local address = "
+				+s.getLocalAddress().toString());
+		System.out.println("   Local port = "+s.getLocalPort());
+		System.out.println("   Need client authentication = "
+				+s.getNeedClientAuth());
+		SSLSession ss = s.getSession();
+		System.out.println("   Cipher suite = "+ss.getCipherSuite());
+		System.out.println("   Protocol = "+ss.getProtocol());
 	}
 
 }

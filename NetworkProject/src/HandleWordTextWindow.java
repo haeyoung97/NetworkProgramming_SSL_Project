@@ -37,13 +37,16 @@ class HandleWordTextWindow extends JFrame {
 		this.username = username;
 		
 		client = new SSL_Client(serverPort, serverName, path, username);
+		System.out.println("test_client1");
 		client.SSLconnection_Client();
+		System.out.println("test_client2");
 		String strAccessLog = client.getAccessMessage();
 		System.out.println(strAccessLog);
 		System.out.println(client.isConnect());
 //		if(client.isConnect()) {
 //			client.run();
 //		}
+		System.out.println("test_client : " + client.isConnect());
 		if(client.isConnect())
 			SearchWindow();
     }

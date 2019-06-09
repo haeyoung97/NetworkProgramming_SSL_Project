@@ -1,9 +1,14 @@
+import java.io.FileInputStream;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.security.KeyStore;
 
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 
 import RMI.HandleWordText;
@@ -14,6 +19,7 @@ public class SSL_Server {
 	private SSLServerSocket sslServerSocket;
 	private SSLSocket sslSocket;
 	
+    
 	private int port;
 	
 	public SSL_Server(int port) {
@@ -44,21 +50,41 @@ public class SSL_Server {
 	}
 	
 	public void establishEnviron() {
+		final KeyStore ks;
+	    final KeyManagerFactory kmf;
+	    final SSLContext sc;
 		
+	    String ksName = "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey";
 		//System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
-		System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\정상아\\Desktop\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
-		System.setProperty("javax.net.ssl.keyStorePassword", "networkSSL");
+		//System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\정상아\\Desktop\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
+		
+	    //System.setProperty("javax.net.ssl.keyStorePassword", "networkSSL");
 
-		System.setProperty("javax.net.debug","ssl");
+		//System.setProperty("javax.net.debug","ssl");
+		//System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
+		
+		char keyStorePass[] = "networkSSL".toCharArray();
+	    char keyPass[] = "networkSSL".toCharArray();
 		
         try {
+        	ks = KeyStore.getInstance("JKS");
+            ks.load(new FileInputStream(ksName), keyStorePass);
+            
+            kmf = KeyManagerFactory.getInstance("SunX509");
+            kmf.init(ks, keyPass);
+            
+            sc = SSLContext.getInstance("TLS");
+            sc.init(kmf.getKeyManagers(), null, null);
+        	
 			sslServerSocketfactory = (SSLServerSocketFactory)SSLServerSocketFactory.getDefault();
 			sslServerSocket = (SSLServerSocket)sslServerSocketfactory.createServerSocket(port);
+			printServerSocketInfo(sslServerSocket);
 			
 			System.out.println("Echo Server Started & Ready to accept Client Connection");
 			int tmp = 1;
 			while(true) {
 				sslSocket = (SSLSocket) sslServerSocket.accept();
+				printSocketInfo(sslSocket);
 				System.out.println("accept! : " + tmp);
 				tmp++;
 				//new ServerThread(sslSocket).start();	
@@ -66,6 +92,31 @@ public class SSL_Server {
 		}catch(Exception ex) {
 			System.err.println("Error Happend : " + ex.toString());
 		}
+	}
+	
+	private static void printSocketInfo(SSLSocket s) {
+		System.out.println("Socket class: "+s.getClass());
+		System.out.println("   Remote address = "
+				+s.getInetAddress().toString());
+		System.out.println("   Remote port = "+s.getPort());
+		System.out.println("   Local socket address = "
+				+s.getLocalSocketAddress().toString());
+		System.out.println("   Local address = "
+				+s.getLocalAddress().toString());
+		System.out.println("   Local port = "+s.getLocalPort());
+		System.out.println("   Need client authentication = "
+				+s.getNeedClientAuth());
+		SSLSession ss = s.getSession();
+		System.out.println("   Cipher suite = "+ss.getCipherSuite());
+		System.out.println("   Protocol = "+ss.getProtocol());
+	}
+	private static void printServerSocketInfo(SSLServerSocket s) {
+		System.out.println("Server socket class: "+s.getClass());
+		System.out.println("   Server address = "+s.getInetAddress().toString());
+		System.out.println("   Server port = "+s.getLocalPort());
+		System.out.println("   Need client authentication = "+s.getNeedClientAuth());
+		System.out.println("   Want client authentication = "+s.getWantClientAuth());
+		System.out.println("   Use client mode = "+s.getUseClientMode());
 	}
 	
 	
