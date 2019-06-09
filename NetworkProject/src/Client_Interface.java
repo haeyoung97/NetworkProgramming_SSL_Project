@@ -1,17 +1,11 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-//import java.awt.GridLayout;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-//import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-//import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
@@ -37,21 +31,14 @@ public class Client_Interface extends JFrame {
 	private ButtonEventListener serverAccessListener;
 	private ButtonEventListener sslUploadListener;
 	
-	private JSplitPane jsp;
 	
 	public Client_Interface() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(LayoutWidth, LayoutHeight);
 		contentPane = getContentPane();
 		createButton();
-		//createSearchPane();
-		//SSL_function(isAccess);
-		
-		//jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, startPane, searchPane);
-		//jsp.setDividerLocation(LayoutWidth/7);
 		
 		contentPane.add(startPane);
-		//SSL_function();
 		
 		setVisible(true);
 		
@@ -108,35 +95,6 @@ public class Client_Interface extends JFrame {
 		
 	}
 	
-//	void createSearchPane() {
-//		JPanel panel = new JPanel();
-//		
-//		JLabel searchLabel = new JLabel("search : ");
-//		panel.add(searchLabel);
-//		
-//		JTextField searchField = new JTextField(20);
-//		panel.add(searchField);
-//		
-//		JButton searchButton = new JButton();
-//		searchButton.setText("search");
-//		searchButton.setName("search");
-//		searchButton.setBorderPainted(false);
-//		panel.add(searchButton);
-//		
-//		searchPane.add(panel, BorderLayout.NORTH);
-//				
-//		// scroll Bar ¼öÁ¤Áß...
-//		JTextArea searchArea = new JTextArea();
-//		//searchArea.setEnabled(false);
-//		searchArea.setName("searchArea");
-//		searchArea.setText("textArea");
-//		searchArea.setPreferredSize(new Dimension(800, 300));
-//		JScrollPane scrollpane = new JScrollPane(searchArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//		//scrollpane.set
-//		//scrollpane.add(searchArea);
-//		searchPane.add(scrollpane, BorderLayout.SOUTH);
-//		
-//	}
 	
 
 	public static void main(String[] args) {

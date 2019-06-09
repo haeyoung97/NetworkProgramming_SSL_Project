@@ -1,8 +1,10 @@
 0. 컴파일 하기 전 코드 수정
-SSL_Server.java 파일 48번째 줄 strPath 변수를 바꿔주어야 합니다.
+SSL_Server.java 파일 58, 59번째 줄 root, ksName 변수를 바꿔주어야 합니다.
 프로젝트 파일 내부 directory인 keystore directory 안에 MySSLServerKey 파일이 존재합니다.
-이 파일이 있는 경로로 strPath 변수를 바꿔주세요.
+(없다면 7장 실습의 인증서 생성 방법과 동일하게 진행하여 만들어 주면 됩니다.)
+이 파일이 있는 경로로 각각의 변수를 바꿔주세요.
 (...>NetworkProject>bin>keystore>MySSLServerKey)
+더불어 68, 69번째 줄의 keyStorePass, keyPass 변수를 바꿔주어야 합니다. (해당 문자열에는 비밀번호를 설정하면 된다)
 
 1. 컴파일 방법
    1) cmd>...(프로젝트 폴더가 저장된 경로)>NetworkProject>src
@@ -25,6 +27,7 @@ SSL_Server.java 파일 48번째 줄 strPath 변수를 바꿔주어야 합니다.
    4) 다른 cmd 창에 java Client_Interface [Enter]
    5) 업로드 버튼을 누르고 ...>NetworkProject>bin>trustedcerts 파일을 연다.
    6) server address : localhost, server port : 5533, username : [임의의 이름] 을 입력한 후 접속 버튼을 누른다.
+(만약, SSLHandshakeException이 발생한다면 java의 설정 파일인 java.security 파일에서 java.tls.disabled 되어 있는 부분을 비활성화 시켜주어 handshake가 수행될 수 있는 환경을 만들어 줍니다.)
    7) 접속 버튼을 누르면 새로운 창이 나타난다.
    8) upload 버튼을 누르고 임의의 txt 파일을 연다.
    9) 검색창에 임의의 단어를 입력한 후 search 버튼을 클릭한다.

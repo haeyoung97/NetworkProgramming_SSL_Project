@@ -35,10 +35,17 @@ public class ServerThread {
 			outPrint = new PrintWriter(writer, true);
 			
 			String message = null;
+			message = reader.readLine();
+//			outPrint.println(message);
+			System.out.println(message);
+//			while((message = reader.readLine()) != null)
+//				outPrint.println(message);
 			
-			while((message = reader.readLine()) != null)
-				outPrint.println(message);
-			
+//			input.close();
+//			reader.close();
+//			output.close();
+//			writer.close();
+//			outPrint.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -4,11 +4,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
-import java.net.Socket;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -46,27 +44,26 @@ public class SSL_Client {
 		// TODO Auto-generated method stub
 		rmiSetting_Client();
 		
-		//System.setProperty("javax.net.ssl.trustStore", this.path);
-		System.setProperty("javax.net.ssl.trustStore", "trustedcerts");
+		System.setProperty("javax.net.ssl.trustStore", this.path);
 		System.setProperty("javax.net.ssl.trustStorePassword", "networkSSL");
 		
-		//System.setProperty("javax.net.debug","ssl");
+		System.setProperty("javax.net.debug","ssl");
+		//Security.setProperty("jdk.tls.disabledAlgorithms", "RC4"); 
 		//System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
 		try {
 			sslSocketfactory = (SSLSocketFactory)SSLSocketFactory.getDefault();
 
 			socket = (SSLSocket) sslSocketfactory.createSocket(this.serverName, this.serverPort);
-			System.out.println("test_client3");
-			String[] supported = socket.getSupportedCipherSuites();
-			System.out.println("test_client4");
-			socket.setEnabledCipherSuites(supported);
+//			String[] supported = socket.getSupportedCipherSuites();
+//			socket.setEnabledCipherSuites(supported);
+			socket.setEnabledCipherSuites(new String[]{"TLS_RSA_WITH_AES_128_CBC_SHA"});
+			socket.setEnabledProtocols(new String[]{"TLSv1","TLSv1.1","TLSv1.2","SSLv2Hello"});
+
 			printSocketInfo(socket);
 	        socket.startHandshake();
-	         System.out.println("test_client5");
 			accessMsg = "[ user : " + username + " ] client socket access success!";
 			
 			handleWordText = new HandleWordTextImpl();
-		//	System.out.println("test : " + handleWordText.dataParse());
 			TF = true;
 			
 		}
@@ -110,17 +107,18 @@ public class SSL_Client {
 			socketBufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
 			String message = null;
+			//message = bufferedReader.readLine();
+			message = accessMsg;
+			printWriter.println(message);
 			
-			System.out.print("First line : ");
+//			while(!(message = bufferedReader.readLine()).equals("close")){
+//				printWriter.println(message);
+//				String line = socketBufferedReader.readLine();
+//				System.out.println("Got Back : " + line);
+//				System.out.print("Next Line : ");
+//			}
 			
-			while(!(message = bufferedReader.readLine()).equals("close")){
-				printWriter.println(message);
-				String line = socketBufferedReader.readLine();
-				System.out.println("Got Back : " + line);
-				System.out.print("Next Line : ");
-			}
-			
-			socket.close();
+//			socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

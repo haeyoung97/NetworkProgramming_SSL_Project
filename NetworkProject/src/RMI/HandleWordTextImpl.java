@@ -15,18 +15,12 @@ import java.lang.StringBuffer;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
 import javax.swing.text.JTextComponent;
-//:
-//import ButtonEventListener.MyHighLightPainter;
-//import RMI.MyHighLightPainter;
 
 public class HandleWordTextImpl extends UnicastRemoteObject implements HandleWordText {
 	private static final long serialVersionUID = 1L;
-
-	//private static final String StringBuffer = null;
 	
 	private Highlighter.HighlightPainter myHighlighter = new MyHighLightPainter(Color.YELLOW);
 

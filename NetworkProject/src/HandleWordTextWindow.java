@@ -46,21 +46,21 @@ class HandleWordTextWindow extends JFrame {
 //		if(client.isConnect()) {
 //			client.run();
 //		}
-		System.out.println("test_client : " + client.isConnect());
-		if(client.isConnect())
+		System.out.println("Access_client : " + client.isConnect());
+		if(client.isConnect()) {
+			client.run();
 			SearchWindow();
+		}
     }
     
     public void SearchWindow() {
     	
-    	setTitle("새로 띄운 창");
+    	setTitle("Search Window");
         // 주의, 여기서 setDefaultCloseOperation() 정의를 하지 말아야 한다
         // 정의하게 되면 새 창을 닫으면 모든 창과 프로그램이 동시에 꺼진다
         
         JPanel NewWindowContainer = new JPanel();
         setContentPane(NewWindowContainer);
-        JLabel NewLabel = new JLabel("새 창을 띄우는데 성공!");
-        JLabel NewLabe2 = new JLabel(path);
         
         JTextField wordFileField = new JTextField(30);
         wordFileField.setName("wordUploadField");
@@ -99,8 +99,6 @@ class HandleWordTextWindow extends JFrame {
         try {
 			handleWordText = new HandleWordTextImpl();
 			JLabel NewLabe3 = new JLabel("upload : ");
-			//NewWindowContainer.add(NewLabel);
-	        //NewWindowContainer.add(NewLabe2);
 	        NewWindowContainer.add(NewLabe3);
 	        NewWindowContainer.add(wordFileField);
 	        NewWindowContainer.add(wordFileUpload);
@@ -118,8 +116,6 @@ class HandleWordTextWindow extends JFrame {
 	        
 	       searchListener = new ButtonEventListener(searchField, wordTextArea, fileInfoTextArea);
 	       searchButton.addActionListener(searchListener);
-	        //System.out.println("호잇 : " + wordFilePath);
-	        //wordTextArea.setText(handleWordText.dataParse(wordFilePath));
 	        
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block

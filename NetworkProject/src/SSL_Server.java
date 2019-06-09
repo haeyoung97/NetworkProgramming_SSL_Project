@@ -10,6 +10,7 @@ import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
+import javax.net.ssl.TrustManagerFactory;
 
 import RMI.HandleWordText;
 import RMI.HandleWordTextImpl;
@@ -54,40 +55,46 @@ public class SSL_Server {
 	    final KeyManagerFactory kmf;
 	    final SSLContext sc;
 		
-	    String ksName = "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey";
-		//System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
-		//System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\정상아\\Desktop\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
-		
-	    //System.setProperty("javax.net.ssl.keyStorePassword", "networkSSL");
+	    String root = "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\";
+	    String ksName = root + ".keystore\\MySSLServerKey";
+//	    System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\haeyoung\\Documents\\GitHub\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\.keystore\\MySSLServerKey");
+//		System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\정상아\\Desktop\\NetworkProgramming_SSL_Project\\NetworkProject\\bin\\keystore\\MySSLServerKey");
+//		
+//	    System.setProperty("javax.net.ssl.keyStorePassword", "networkSSL");
 
-		//System.setProperty("javax.net.debug","ssl");
+		System.setProperty("javax.net.debug","ssl");
 		//System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
 		
 		char keyStorePass[] = "networkSSL".toCharArray();
 	    char keyPass[] = "networkSSL".toCharArray();
-		
+//		
         try {
         	ks = KeyStore.getInstance("JKS");
             ks.load(new FileInputStream(ksName), keyStorePass);
-            
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            tmf.init(ks);
             kmf = KeyManagerFactory.getInstance("SunX509");
             kmf.init(ks, keyPass);
             
-            sc = SSLContext.getInstance("TLS");
-            sc.init(kmf.getKeyManagers(), null, null);
+            sc = SSLContext.getInstance("TLSv1.2");
+            //sc.init(kmf.getKeyManagers(), null, null);
+            sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+        	SSLContext.setDefault(sc);
+////        	
         	
-			sslServerSocketfactory = (SSLServerSocketFactory)SSLServerSocketFactory.getDefault();
+        	sslServerSocketfactory = (SSLServerSocketFactory)SSLServerSocketFactory.getDefault();
 			sslServerSocket = (SSLServerSocket)sslServerSocketfactory.createServerSocket(port);
 			printServerSocketInfo(sslServerSocket);
 			
+			sslServerSocket.setEnabledCipherSuites(new String[]{"TLS_RSA_WITH_AES_128_CBC_SHA"});
+			sslServerSocket.setEnabledProtocols(new String[]{"TLSv1","TLSv1.1","TLSv1.2","SSLv2Hello"});
+			
 			System.out.println("Echo Server Started & Ready to accept Client Connection");
-			int tmp = 1;
+			
 			while(true) {
 				sslSocket = (SSLSocket) sslServerSocket.accept();
 				printSocketInfo(sslSocket);
-				System.out.println("accept! : " + tmp);
-				tmp++;
-				//new ServerThread(sslSocket).start();	
+				new ServerThread(sslSocket).start();	
 			}
 		}catch(Exception ex) {
 			System.err.println("Error Happend : " + ex.toString());
